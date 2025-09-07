@@ -47,9 +47,18 @@ app.post("/api/login", async (req, res) => {
     if (user.password !== password) {
       return res.status(401).json({ error: "Invalid email or password" });
     }
-    res.status(200).json({ message: "Login successful", user });
+    res.status(200).json({ message: "Login successful ", user });
   } catch (error) {
     console.error("❌ Error during login:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+app.get("/api/users", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("❌ Error fetching users:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
